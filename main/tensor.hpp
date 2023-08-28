@@ -56,6 +56,24 @@ struct Tensor: public expr::Exp<Tensor<Device, dimension>>{
         return Tensor<Device, dimension-1>(dptr_ + this->MemSize<1>() * idx, shape_.SubShape(), stride_);
     }
 
+    // Assignment of same type
+    inline Tensor<Device, dimension> operator=(const Tensor<Device, dimension> &exp) {
+        dptr_ = exp.dptr_;
+        shape_ = exp.shape_;
+        stride_ = exp.stride_;
+        return *this;
+    }
+
+    template<typename E>
+    inline Tensor<Device, dimension> operator=(const expr::Exp<E> &exp){
+        return this->__assign(exp);
+    }
+
+    inline Tensor<Device, dimension> operator=(const float &exp){
+        return this->__assign(exp);
+    }
+
+
 };
 
 // A 1d tensor for a different implementation of operator[] (TvT there is no good way)
