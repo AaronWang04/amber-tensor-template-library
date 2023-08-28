@@ -1,3 +1,17 @@
 #include <iostream>
-#include <string> // strings for visualization in terminal
+#include <cstdio>
+
+// datatype libs
+#include <string>
 #include <vector>
+#include <cfloat>
+
+// computation libs
+#include <cmath>
+#include <algorithm>
+
+// others
+#include <functional>
+#include <sstream>
+#include <utility>
+

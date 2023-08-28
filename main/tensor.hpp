@@ -1,31 +1,60 @@
+#include "default_include.hpp"
 #include "shape.hpp"
 #include "device.hpp"
+#include "expression.hpp"
 
-template <typename Device, int dimension>
-struct Tensor
-{
+#ifndef TENSOR
+#define TENSOR
 
-public:
-    static const bool kDevCPU = Device::kDevCPU;
+namespace amber{
+
+/*!
+ * \brief General tensor to store floats
+ * \tparam Device which device the tensor is on (CPU, GPU)
+ * \tparam dimension dimension of the tensor
+ */
+template <int dimension>
+struct Tensor: public expr::Exp<Tensor<dimension>>{
+
+    bool isCPU = true;
+    // data pointer
+    float *dptr_ = nullptr;
     Shape<dimension> shape_;
     size_t stride_;
-    Stream<Device> *stream_;
 
-    float *dptr_ = nullptr;
+    // Default constructor
+    Tensor(void) {};
+    Tensor(float *dptr) : dptr_(dptr){};
+    Tensor(const Shape<dimension> &shape) : shape_(shape){};
+    Tensor(float *dptr, const Shape<dimension> &shape) : dptr_(dptr), shape_(shape), stride_(shape[dimension-1]){};
 
-    // constructors
-    Tensor(void) : stream_(NULL) {}
-    Tensor(const Shape<dimension> &shape) : shape_(shape), stream_(NULL) {}
-    Tensor(float *dptr, const Shape<dimension> &shape) : dptr_(dptr), shape_(shape), stride_(shape[kSubdim]), stream_(NULL) {}
-    Tensor(float *dptr, const Shape<dimension> &shape, Stream<Device> *stream)
-        : dptr_(dptr), shape_(shape), stride_(shape[kSubdim]), stream_(stream) {}
+    inline size_t size(void) const{
+        size_t size = this->shape_[0];
+        #pragma unroll
+        for (int i = 1; i < shape_.dimension; ++i) { size *= this->shape_[i]; }
+        return size;
+    }
 
-    Tensor(float *dptr, const Shape<dimension> &shape, size_t stride, Stream<Device> *stream)
-        : dptr_(dptr), shape_(shape), stride_(stride), stream_(stream) {}
+    inline size_t size(size_t idx) const{
+        return shape_[idx];
+    }
+    
+    template<int startdim>
+    inline size_t MemSize(void) const {
+        size_t memsz = this->stride_;
+        #pragma unroll
+        for (int i = startdim; i < shape_.kSubdim; ++i) {
+            memsz *= this->shape_[i];
+        }
+        return memsz;
+    }
 
-
-    void set_stream(Stream<Device> *stream) { this->stream_ = stream; }
-    size_t size(index_t idx) const { return shape_[idx]; }
-
+    inline Tensor<dimension - 1> operator[](size_t idx) const {
+        return Tensor<dimension-1>(dptr_ + this->MemSize<1>() * idx, shape_.SubShape());
+    }
 
 };
+
+}
+
+#endif

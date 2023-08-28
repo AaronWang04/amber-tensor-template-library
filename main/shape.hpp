@@ -1,5 +1,7 @@
 #include "default_include.hpp"
 
+#ifndef SHAPE
+#define SHAPE
 // struct declarations
 template <int ndim>
 struct Shape;
@@ -148,3 +150,5 @@ Shape<3> Shape3(size_t s0, size_t s1, size_t s2) {
   s[0] = s0; s[1] = s1; s[2] = s2;
   return s;
 }
+
+#endif
