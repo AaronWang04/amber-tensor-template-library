@@ -1,3 +1,7 @@
+/*
+	Definition of all expressions, the heart of this lib
+*/
+
 #include "default_include.hpp"
 #include "operation.hpp"
 #include "shape.hpp"
@@ -60,7 +64,11 @@ class TensorExp : public Exp<Container>{
 	}
 };
 
-// Binary Expressions
+
+
+
+
+// Binary Map Expression (maps binary operations to expressions)
 template<typename OP, typename TLhs, typename TRhs>
 struct BinaryMapExp: public Exp<BinaryMapExp<OP, TLhs, TRhs> >{
 	const TLhs& lhs;
