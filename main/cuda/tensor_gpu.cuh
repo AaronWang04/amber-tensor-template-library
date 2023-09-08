@@ -3,6 +3,9 @@
 
 #include "tensor.hpp"
 
+// disable warning so I can use vscode
+#pragma warning(disable : 4996)
+
 namespace amber {
     namespace cuda {
         #if __CUDA_ARCH__>=200
@@ -37,8 +40,7 @@ namespace amber {
 
             if (num_block < MAX_GRID_NUM) {
                 dim3 dimGrid(num_block, 1, 1);
-                MapBinaryKernel<Saver, BinaryMapper, BASE_THREAD_BITS> \
-                    <<<dimGrid,dimBlock>>>(dst, lhs, rhs);
+                MapBinaryKernel<Saver, BinaryMapper, BASE_THREAD_BITS> <<<dimGrid,dimBlock>>>(dst, lhs, rhs);
             } else {
                 int repeat = (num_block + BASE_GRID_NUM-1) / BASE_GRID_NUM;
                 dim3 dimGrid(BASE_GRID_NUM, 1 , 1);
@@ -48,4 +50,4 @@ namespace amber {
 
     }; // namespace cuda
 }; // namespace amber
-#endif // TENSOR_GPU
+#endif

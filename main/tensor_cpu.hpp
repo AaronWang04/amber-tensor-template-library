@@ -58,7 +58,6 @@ namespace amber {
         }
     }
 
-
     template<typename Saver, typename Exp, int dim>
     inline void Map(Tensor<cpu,dim> _dst, const Exp &exp){
         CTensor2D dst = _dst.FlatTo2D();
