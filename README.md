@@ -1,5 +1,4 @@
-# amber 2.0
-My attempt at an antograd+tensor library made in C++/Cuda with no external dependencies. The library utilizies expressive templating and CRTP pattern to achieve efficiency whilst maintaining object oriented principles (see notes.md for how this works). 
+# amber_raw
+Attempt at an antograd+tensor library made in C++/Cuda with no external dependencies. The library utilizies expressive templating and CRTP pattern to achieve efficiency whilst maintaining object oriented principles. In progress.
 
-### Goal/Motive
-In my opinion, machine learning is one of the coolest applications of computing/mathematics. The mathematics behind it is very intuitive, and it is the first time I learned something that takes fully takes advantage of the math I learned in University. You can approach machine learning from both a highly theoretical point of view, or a low-end nitty gritty view concerning yourself with how each operations are carried out. This project is my attempt at deepdiving into the backend of machine learning libraries, and also improving my C++ skills. I have previously build a way over-simplified lightweight ML library using the xtensor library to test out the waters, and now I will be building the project more seriously and with more complexity.
+notes.md contains some important information I learned along the way
